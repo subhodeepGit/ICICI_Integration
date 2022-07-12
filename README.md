@@ -1,6 +1,6 @@
-## Icici Integration
+## ICICI Integration
 
-ICICI payment integration
+ICICI Payment Integration
 
 #### License
 
