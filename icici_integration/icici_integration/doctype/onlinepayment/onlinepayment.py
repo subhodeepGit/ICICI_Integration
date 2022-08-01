@@ -13,13 +13,20 @@ from urllib.request import urlopen
 import frappe
 from frappe.model.document import Document
 from frappe.utils import get_url
+import requests 
+from urllib.request import urlopen
+import json
+from selenium import webdriver
+
 
 class OnlinePayment(Document):
     def validate(self):
+        # on_submit()
         print("\n\n\n")
         print("Going to calc.py file")
         print("\n\n\n")
         
+
        
         getDoc=frappe.get_doc("ICICI Settings")
         merchantId = getDoc.merchantid
@@ -34,9 +41,8 @@ class OnlinePayment(Document):
         currencyCode="INR" 
         merchantTxnId=self.name  
         transactionType="sale"          
-        resultURL="http://erp.soul.com:8000/app/onlinepayment/"+self.name
+        resultURL="http://localhost:8000/app/onlinepayment/"+self.name
         
-        print(resultURL)
         try:
 
             tokenclass = JClass('TokenClass') 
@@ -44,13 +50,32 @@ class OnlinePayment(Document):
                                 java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
                                 java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
                                 java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL))
+                                
             print(res)
             newURL= "https://test.fdconnect.com//Pay/?sessionToken=" + str(res) + "&configId=PageId2022021713158"; 
-            # windows.location.redirect()            
-            webbrowser.open_new_tab(newURL) 
-            # status=tokenclass.getDecryptResponse()
+            # s = requests.Session()
+            # print(s)       
+            webbrowser.open(newURL) 
+            # s.get(newURL)
+            print(newURL)
+            # print(s) 
+            # # response = urlopen(newURL)
+            # # data_json = json.loads(response.read())
+  
+            # # print the json response
+            # contents = request.get(newURL).read()
+            # print(r.status_code)
+            # print(r.headers)
+            # print(r.content)  # bytes
+            # print(r.text)
+            # print("\n\n\n\n")
+            # print(contents)
+
+           
             
         except Exception as err:
             print("Exception: {err}")
+
+
 
            

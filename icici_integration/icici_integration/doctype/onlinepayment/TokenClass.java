@@ -1,6 +1,9 @@
 import com.fiserv.fdc.FDConnectUtils;
 import com.fiserv.fdc.sale.model.FDConnectSaleRequest;
 import com.fiserv.fdc.sale.model.FDConnectSaleResponse;
+import com.fiserv.fdc.response.model.FDConnectDecryptRequest;
+import com.fiserv.fdc.response.model.FDConnectDecryptResponse;
+import com.google.gson.Gson;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -28,6 +31,9 @@ public class TokenClass {
             System.out.println(resp.getErrorCode());
             System.out.println(resp.getErrorMessage());
             System.out.println(new Gson().toJson(resp));
+
+            String decData=resp.getTransactionStatus();
+            return decData;
     }
 }
 
