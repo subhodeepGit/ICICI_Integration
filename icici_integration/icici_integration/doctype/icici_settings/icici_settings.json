@@ -19,19 +19,19 @@
   },
   {
    "fieldname": "key",
-   "fieldtype": "Data",
+   "fieldtype": "Password",
    "label": "key"
   },
   {
    "fieldname": "iv",
-   "fieldtype": "Data",
+   "fieldtype": "Password",
    "label": "iv"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-28 11:32:13.490374",
+ "modified": "2022-08-02 16:07:11.566836",
  "modified_by": "Administrator",
  "module": "Icici Integration",
  "name": "ICICI Settings",
