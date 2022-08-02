@@ -24,7 +24,7 @@ def receive_post_data(**kwargs):
    
    
     url=get_url("{0}{1}".format("/app/onlinepayment/",name))
-    webbrowser.open(url)  # Go to example.com                                
-                            
+    # webbrowser.open(url)  # Go to example.com                                
+    webbrowser.open(url, new=0)                        
     
     # return

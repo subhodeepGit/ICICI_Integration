@@ -16,7 +16,7 @@ from frappe.utils import get_url
 import requests 
 from urllib.request import urlopen
 import json
-from selenium import webdriver
+
 
 
 class OnlinePayment(Document):
@@ -32,8 +32,8 @@ class OnlinePayment(Document):
         transactionType="sale"          
         Udf="123456"  # user variable
         # resultURL="http://localhost:8000/app/onlinepayment/"+self.name
-        # resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
-        resultURL="http://demokp.eduleadonline.com/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
+        resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
+        # resultURL="http://demokp.eduleadonline.com/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
         
         try:
 
@@ -47,7 +47,8 @@ class OnlinePayment(Document):
             if str(res) !="None":
 
                 newURL= "https://test.fdconnect.com//Pay/?sessionToken=" + str(res) + "&configId=PageId2022021713158"; 
-                webbrowser.open(newURL) 
+                # webbrowser.open(newURL) 
+                webbrowser.open(newURL, new=0)
             else :
                 frappe.throw("Session has expired. Please create new transaction")  
             
