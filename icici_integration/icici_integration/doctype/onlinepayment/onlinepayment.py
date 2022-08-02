@@ -41,15 +41,17 @@ class OnlinePayment(Document):
         currencyCode="INR" 
         merchantTxnId=self.name  
         transactionType="sale"          
-        resultURL="http://localhost:8000/app/onlinepayment/"+self.name
+        Udf="123456"
+        # resultURL="http://localhost:8000/app/onlinepayment/"+self.name
+        resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
         
         try:
 
             tokenclass = JClass('TokenClass') 
-            res = tokenclass.getToken(java.lang.String("%s"% merchantId), java.lang.String("%s"% key),
+            res = tokenclass.getTokenNew(java.lang.String("%s"% merchantId), java.lang.String("%s"% key),
                                 java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
                                 java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
-                                java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL))
+                                java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL), java.lang.String("%s"% Udf))
                                 
             print(res)
             newURL= "https://test.fdconnect.com//Pay/?sessionToken=" + str(res) + "&configId=PageId2022021713158"; 

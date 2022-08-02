@@ -35,6 +35,31 @@ public class TokenClass {
             String decData=resp.getTransactionStatus();
             return decData;
     }
+
+     public static String getTokenNew(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, String merchantTxnId, String transactionType, String resultURL,String Udf) throws IOException {
+        
+        
+        FDConnectSaleRequest request = new FDConnectSaleRequest();
+        request.setMerchantId(merchantId);
+        request.setKey(key);
+        request.setIv(iv);
+        request.setApiURL(apiURL);
+        request.setAmount(amount);
+        request.setCurrencyCode(currencyCode);
+        request.setMerchantTxnId(merchantTxnId);
+        request.setTransactionType(transactionType);
+        request.setUdf5(Udf);
+        request.setResultURL(resultURL);
+
+        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
+        System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
+        System.out.println("respErrorCode :"+resp.getErrorCode());
+        System.out.println("ErrorMessage :"+resp.getErrorMessage());
+
+                     
+        String tokenId=resp.getSessionTokenId();
+        return tokenId;
+    }
 }
 
 
