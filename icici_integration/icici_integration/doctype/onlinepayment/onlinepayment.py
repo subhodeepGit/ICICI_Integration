@@ -21,27 +21,16 @@ from selenium import webdriver
 
 class OnlinePayment(Document):
     def validate(self):
-        # on_submit()
-        print("\n\n\n")
-        print("Going to calc.py file")
-        print("\n\n\n")
-        
-
-       
         getDoc=frappe.get_doc("ICICI Settings")
         merchantId = getDoc.merchantid
-        print("\n\n\n")
-        print(merchantId)        
         key=getDoc.key      
         iv=getDoc.iv
         apiURL="https://test.fdconnect.com//FirstPayL2Services/getToken"     
-        amountValue=self.amount
-        print("\n\n\n")
-        print(amountValue)      
+        amountValue=self.amount          
         currencyCode="INR" 
         merchantTxnId=self.name  
         transactionType="sale"          
-        Udf="123456"
+        Udf="123456"  # user variable
         # resultURL="http://localhost:8000/app/onlinepayment/"+self.name
         resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
         
@@ -52,31 +41,20 @@ class OnlinePayment(Document):
                                 java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
                                 java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
                                 java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL), java.lang.String("%s"% Udf))
+                                         
                                 
-            print(res)
-            newURL= "https://test.fdconnect.com//Pay/?sessionToken=" + str(res) + "&configId=PageId2022021713158"; 
-            # s = requests.Session()
-            # print(s)       
-            webbrowser.open(newURL) 
-            # s.get(newURL)
-            print(newURL)
-            # print(s) 
-            # # response = urlopen(newURL)
-            # # data_json = json.loads(response.read())
-  
-            # # print the json response
-            # contents = request.get(newURL).read()
-            # print(r.status_code)
-            # print(r.headers)
-            # print(r.content)  # bytes
-            # print(r.text)
-            # print("\n\n\n\n")
-            # print(contents)
+            if str(res) !="None":
 
-           
+                newURL= "https://test.fdconnect.com//Pay/?sessionToken=" + str(res) + "&configId=PageId2022021713158"; 
+                webbrowser.open(newURL) 
+            else :
+                frappe.throw("Session has expired. Please create new transaction")  
+            
             
         except Exception as err:
-            print("Exception: {err}")
+           
+
+            frappe.throw (err)
 
 
 

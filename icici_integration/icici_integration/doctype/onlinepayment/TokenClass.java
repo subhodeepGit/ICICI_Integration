@@ -13,12 +13,7 @@ public class TokenClass {
     public static String getToken(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, String merchantTxnId, String transactionType, String resultURL) throws IOException {
         
         FDConnectSaleRequest request = new FDConnectSaleRequest(merchantId,key,iv,apiURL,amount,currencyCode,merchantTxnId,transactionType,resultURL);
-        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
-
-        System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
-        System.out.println("respErrorCode :"+resp.getErrorCode());
-        System.out.println("ErrorMessage :"+resp.getErrorMessage());  
-        
+        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);               
         String tokenId=resp.getSessionTokenId();
         return tokenId;
     }
@@ -27,11 +22,6 @@ public class TokenClass {
         
             FDConnectDecryptRequest fdConnectDecryptRequest = new FDConnectDecryptRequest(merchantId,encData,fdcTxnId,apiURL);
             FDConnectDecryptResponse resp = FDConnectUtils.decryptMsg(fdConnectDecryptRequest);
-    
-            System.out.println(resp.getErrorCode());
-            System.out.println(resp.getErrorMessage());
-            System.out.println(new Gson().toJson(resp));
-
             String decData=resp.getTransactionStatus();
             return decData;
     }
@@ -51,12 +41,7 @@ public class TokenClass {
         request.setUdf5(Udf);
         request.setResultURL(resultURL);
 
-        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
-        System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
-        System.out.println("respErrorCode :"+resp.getErrorCode());
-        System.out.println("ErrorMessage :"+resp.getErrorMessage());
-
-                     
+        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);                     
         String tokenId=resp.getSessionTokenId();
         return tokenId;
     }
