@@ -32,7 +32,8 @@ class OnlinePayment(Document):
         transactionType="sale"          
         Udf="123456"  # user variable
         # resultURL="http://localhost:8000/app/onlinepayment/"+self.name
-        resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
+        # resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
+        resultURL="http://demokp.eduleadonline.com/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
         
         try:
 
