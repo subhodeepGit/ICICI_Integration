@@ -37,6 +37,26 @@ public class TokenClass {
         String inquiryStatus= new Gson().toJson(resp);
         return inquiryStatus;
     }
+
+     public static String getTokenNew(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, String merchantTxnId, String transactionType, String resultURL,String Udf) throws IOException {
+        
+        
+        FDConnectSaleRequest request = new FDConnectSaleRequest();
+        request.setMerchantId(merchantId);
+        request.setKey(key);
+        request.setIv(iv);
+        request.setApiURL(apiURL);
+        request.setAmount(amount);
+        request.setCurrencyCode(currencyCode);
+        request.setMerchantTxnId(merchantTxnId);
+        request.setTransactionType(transactionType);
+        request.setUdf5(Udf);
+        request.setResultURL(resultURL);
+
+        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);                     
+        String tokenId=resp.getSessionTokenId();
+        return tokenId;
+    }
 }
 
 
