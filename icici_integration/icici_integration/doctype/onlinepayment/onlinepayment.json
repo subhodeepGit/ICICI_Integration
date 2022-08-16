@@ -8,28 +8,16 @@
  "engine": "InnoDB",
  "field_order": [
   "amount",
-  "date_of_transaction",
-  "transaction_id",
   "amended_from",
-  "merchantid",
-  "encdata",
-  "fptxnid"
+  "pay",
+  "fptxnid",
+  "transaction_status"
  ],
  "fields": [
   {
    "fieldname": "amount",
    "fieldtype": "Data",
    "label": "Amount"
-  },
-  {
-   "fieldname": "date_of_transaction",
-   "fieldtype": "Date",
-   "label": "Date Of Transaction"
-  },
-  {
-   "fieldname": "transaction_id",
-   "fieldtype": "Data",
-   "label": "Transaction Id"
   },
   {
    "fieldname": "amended_from",
@@ -41,25 +29,25 @@
    "read_only": 1
   },
   {
-   "fieldname": "merchantId",
-   "fieldtype": "Data",
-   "label": "merchantId"
+   "fieldname": "pay",
+   "fieldtype": "Button",
+   "label": "pay"
   },
   {
-   "fieldname": "encData",
-   "fieldtype": "Data",
-   "label": "encData"
-  },
-  {
-   "fieldname": "fpTxnId",
+   "fieldname": "fptxnid",
    "fieldtype": "Data",
    "label": "fpTxnId"
+  },
+  {
+   "fieldname": "transaction_status",
+   "fieldtype": "Data",
+   "label": "Transaction Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-28 10:55:09.422105",
+ "modified": "2022-08-12 15:56:01.105733",
  "modified_by": "Administrator",
  "module": "Icici Integration",
  "name": "OnlinePayment",
