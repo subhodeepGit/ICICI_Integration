@@ -43,14 +43,7 @@ class OnlinePayment(Document):
             print(resultData["saleTxnDetail"]["merchantTxnId"])
             print(resultData["saleTxnDetail"]["transactionStatus"])
                                                         
-            # if len(resultData)>0:
-                                    
-            #     frappe.db.set_value("OnlinePayment",resultData["saleTxnDetail"]["transactionStatus"],doc.transaction_status)
-                
-            # else:
-
-            #     frappe.msgprint("Transaction Details not found")
-
+           
         except Exception as e: 
             print(repr(e))
 
@@ -114,16 +107,14 @@ def getSessionToken(name,amount):
     nURL=frappe.utils.get_url()
 
     
-    # resultURL="http://localhost:8000/paymentreturn?id=" + name    # 1VM localhost:not working
+   
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
-    # resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working
-    # resultURL =frappe.utils.get_url()+"/paymentreturn?id=" + name
+    resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working
+    # resultURL="http://demokp.eduleadonline.com/paymentreturn?id=" + name    
 
-    resultURL="http://demokp.eduleadonline.com/paymentreturn?id=" + name    #1VM ipaddress:working
-    # resultURL="http://10.0.163.42:8000/about.html?id=" + name  
 
-    
+    # resultURL="http://10.0.163.42:8000/load.html?id=" + name    
 
     # resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
     # resultURL="http://demokp.eduleadonline.com/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
@@ -150,4 +141,4 @@ def getSessionToken(name,amount):
 
     return str(res)
     # frappe.db.set_value("OnlinePayment",value-name,"fpTxnId",value-fpTxnId)
-    frappe.db.set_value("OnlinePayment",merchantTxnId,"fptxnid",merchantTxnId)
+    
