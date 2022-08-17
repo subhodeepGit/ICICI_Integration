@@ -117,10 +117,10 @@ def getSessionToken(name,amount):
     # resultURL="http://localhost:8000/paymentreturn?id=" + name    # 1VM localhost:not working
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
-    resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working
+    # resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working
     # resultURL =frappe.utils.get_url()+"/paymentreturn?id=" + name
 
-
+    resultURL="http://demokp.eduleadonline.com/paymentreturn?id=" + name    #1VM ipaddress:working
     # resultURL="http://10.0.163.42:8000/about.html?id=" + name  
 
     
