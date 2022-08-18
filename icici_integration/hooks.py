@@ -15,7 +15,8 @@ app_license = "MIT"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/icici_integration/css/icici_integration.css"
 # app_include_js = "/assets/icici_integration/js/icici_integration.js"
-app_include_js = "/assets/js/aka.min.js"
+
+# app_include_js = "/assets/js/aka.min.js"   added :18:08:2022
 
 # include js, css files in header of web template
 # web_include_css = "/assets/icici_integration/css/icici_integration.css"
