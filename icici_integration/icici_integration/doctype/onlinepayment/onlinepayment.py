@@ -9,7 +9,6 @@ import webbrowser
 from urllib.request import urlopen
 import frappe
 from frappe.model.document import Document
-import requests 
 from urllib.request import urlopen
 import json
 
@@ -37,18 +36,21 @@ class OnlinePayment(Document):
 
             print("\n\n\n\n\n")
             print(resultData) 
+            print(type(resultData))
+            resultData = json.loads(str(resultData))
+            print(type(resultData))
+
             print("Started reading nested JSON array")
             print(resultData["fpTransactionId"])
-            print(resultData["merchantId"])
             print(resultData["saleTxnDetail"]["merchantTxnId"])
             print(resultData["saleTxnDetail"]["transactionStatus"])
+            
+            frappe.db.set_value("OnlinePayment",str(resultData["saleTxnDetail"]["merchantTxnId"]),"fptxnid",str(resultData["fpTransactionId"]))
+            # frappe.db.sql(""" update `tabOnlinePayment` set fptxnid='%s' where name='%s' """%(str(resultData["fpTransactionId"]),str(resultData["saleTxnDetail"]["merchantTxnId"])))
                                                         
            
         except Exception as e: 
             print(repr(e))
-
-            # print("Exception: {err}")
-
         return str(resultData)
        
 
@@ -110,11 +112,12 @@ def getSessionToken(name,amount):
    
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
-    resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working
+    resultURL="http://10.0.163.147:8000/paymentreturn?id=" + name    #1VM ipaddress:working*****
     # resultURL="http://demokp.eduleadonline.com/paymentreturn?id=" + name    
 
 
-    # resultURL="http://10.0.163.42:8000/load.html?id=" + name    
+    # resultURL="http://10.0.163.147:8000/redirectpage?id=" + name   
+   
 
     # resultURL="http://localhost:8000/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
     # resultURL="http://demokp.eduleadonline.com/api/method/icici_integration.icici_integration.doctype.api.receive_post_data"
@@ -140,5 +143,6 @@ def getSessionToken(name,amount):
         print("Exception: {err}")
 
     return str(res)
-    # frappe.db.set_value("OnlinePayment",value-name,"fpTxnId",value-fpTxnId)
+    
+    
     

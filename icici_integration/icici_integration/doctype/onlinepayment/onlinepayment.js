@@ -74,6 +74,12 @@
 			});
 	
 	});
+	// frappe.ui.form.on('OnlinePayment', {
+	// 	refresh: function(frm) {
+	// 		frappe.render_template("loadingpage.html");
+		 		   		
+	// 	}
+	// });
 			
 		
 	  
