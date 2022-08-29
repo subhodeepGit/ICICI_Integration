@@ -24,8 +24,7 @@ public class TokenClass {
         
         FDConnectDecryptRequest fdConnectDecryptRequest = new FDConnectDecryptRequest(merchantId,encData,fdcTxnId,apiURL);
         FDConnectDecryptResponse resp = FDConnectUtils.decryptMsg(fdConnectDecryptRequest);
-
-        String decData=resp.getTransactionStatus();
+        String decData=new Gson().toJson(resp);
         return decData;
     }
 

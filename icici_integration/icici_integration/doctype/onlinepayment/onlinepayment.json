@@ -40,6 +40,7 @@
    "label": "fpTxnId"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "transaction_status",
    "fieldtype": "Data",
    "label": "Transaction Status"
@@ -48,7 +49,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-19 14:46:16.891519",
+ "modified": "2022-08-25 10:50:18.978834",
  "modified_by": "Administrator",
  "module": "Icici Integration",
  "name": "OnlinePayment",
