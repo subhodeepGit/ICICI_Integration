@@ -48,9 +48,12 @@ def getTransactionDetails(doc,name):
         frappe.db.set_value("OnlinePayment",str(resultData["saleTxnDetail"]["merchantTxnId"]),"fptxnid",str(resultData["fpTransactionId"]))
         # frappe.db.sql(""" update `tabOnlinePayment` set fptxnid='%s' where name='%s' """%(str(resultData["fpTransactionId"]),str(resultData["saleTxnDetail"]["merchantTxnId"])))
         frappe.db.set_value("OnlinePayment",str(resultData["saleTxnDetail"]["merchantTxnId"]),"transaction_status",str(resultData["saleTxnDetail"]["transactionStatus"]))           
+        frappe.db.set_value("OnlinePayment",str(resultData["saleTxnDetail"]["merchantTxnId"]),"transactionstatusdescription",str(resultData["saleTxnDetail"]["transactionStatusDescription"]))           
+      
         frappe.db.commit() 
         doc.fptxnid =  str(resultData["fpTransactionId"]) 
         doc.transaction_status =  str(resultData["saleTxnDetail"]["transactionStatus"])
+        doc.transactionstatusdescription =  str(resultData["saleTxnDetail"]["transactionStatusDescription"])
     except Exception as e: 
         print(repr(e))
     return str(resultData) 
@@ -71,9 +74,11 @@ def getSessionToken(doc,name,amount):
     # nURL=frappe.utils.get_url()        
 
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
+    
     # resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working*****
-    print(frappe.local.login_manager.user)
-    resultURL="http://paymentkp.eduleadonline.com/paymentreturn?id=" + name    
+    
+    resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
+
     try:
 
         tokenclass = JClass('TokenClass') 
@@ -105,10 +110,10 @@ def getSessionToken(doc,name,amount):
         
 @frappe.whitelist()  
 # def getDecryptedData(doc,name):
-def getDecryptedData(url):  
-    # print("\n\n\n")
-    # print("ok")
-    # print("url",url)
+def getDecryptedData(doc,encData,fdcTxnId):  
+    print("\n\n\n")
+    print("ok")
+    print(doc)
     getDoc=frappe.get_doc("ICICI Settings")
     merchantId = getDoc.merchantid
     apiURL="https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse" 
