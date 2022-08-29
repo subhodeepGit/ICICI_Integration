@@ -30,34 +30,34 @@ frappe.ui.form.on("OnlinePayment",{
  
  frappe.ui.form.on("OnlinePayment", "onload", function(frm) {
  	
-	 alert ("hello");
+	//  alert ("hello");
 	 var  queryString = window.location.search;
-	 alert (queryString);
+	//  alert (queryString);
 	 var urlParams = new URLSearchParams(queryString);
 	 var fpTxnId = urlParams.get('fpTxnId');
 	 var encData = urlParams.get('encData')
-	 alert (fpTxnId)
-	 alert(encData)
+	//  alert (fpTxnId)
+	//  alert(encData)
 
-	 frappe.call({		  
-		method: "icici_integration.icici_integration.doctype.onlinepayment.onlinepayment.getDecryptedData",		        
-		args: {
-			doc:frm.doc,
+	//  frappe.call({		  
+	// 	method: "icici_integration.icici_integration.doctype.onlinepayment.onlinepayment.getDecryptedData",		        
+	// 	args: {
+	// 		doc:frm.doc,
 			
 
-	  },
+	//   },
 		  
-		callback: function(r) {
-		   //  alert(JSON.stringify(r))			 
-			var res=r.message;
-		   //  alert(res);
-			// window.open("http://10.0.160.184:8000/payment-details?new=1&transaction_id="+res,"_self")
-			// window.open("http://localhost:8000/payment-details?new=1&transaction_id="+res,"_self")  
-			// redirect to Web form 
-			// window.open("https://test.fdconnect.com/Pay/?sessionToken=" + res + "&configId=PageId2022021713158","_self")
+	// 	callback: function(r) {
+	// 	   //  alert(JSON.stringify(r))			 
+	// 		var res=r.message;
+	// 	   //  alert(res);
+	// 		// window.open("http://10.0.160.184:8000/payment-details?new=1&transaction_id="+res,"_self")
+	// 		// window.open("http://localhost:8000/payment-details?new=1&transaction_id="+res,"_self")  
+	// 		// redirect to Web form 
+	// 		// window.open("https://test.fdconnect.com/Pay/?sessionToken=" + res + "&configId=PageId2022021713158","_self")
 			 
-		  }
-	  });
+	// 	  }
+	//   });
 
 	
  
