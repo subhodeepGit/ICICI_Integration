@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "PPP.######",
+ "autoname": "PAY.######",
  "creation": "2022-07-27 11:29:32.726380",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -9,7 +9,6 @@
  "field_order": [
   "amount",
   "amended_from",
-  "pay",
   "fptxnid",
   "transaction_status",
   "transactionstatusdescription"
@@ -30,33 +29,31 @@
    "read_only": 1
   },
   {
-   "fieldname": "pay",
-   "fieldtype": "Button",
-   "label": "pay"
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "fptxnid",
    "fieldtype": "Data",
-   "label": "fpTxnId"
+   "label": "fpTxnId",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
    "fieldname": "transaction_status",
    "fieldtype": "Data",
-   "label": "Transaction Status"
+   "label": "Transaction Status",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
    "fieldname": "transactionstatusdescription",
    "fieldtype": "Data",
-   "label": "TransactionStatusDescription"
+   "label": "TransactionStatusDescription",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-29 18:09:07.209689",
+ "modified": "2022-08-30 16:04:02.655691",
  "modified_by": "Administrator",
  "module": "Icici Integration",
  "name": "OnlinePayment",
