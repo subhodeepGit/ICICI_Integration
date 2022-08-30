@@ -64,11 +64,11 @@ def getSessionToken(name,amount):
     transactionType="sale"  
      
 
-    resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
+    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
     # resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working*****
     
-    # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
+    resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
 
     try:
 
