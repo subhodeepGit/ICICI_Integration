@@ -12,14 +12,23 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
  
 	   },
 		   
-		 callback: function(r) {		 
-			 var res=r.message;			
-			 window.open("https://test.fdconnect.com/Pay/?sessionToken=" + res + "&configId=PageId2022021713158","_self")
+		 callback: function(r) {
+			 var sessionId=r.message["TokenId"]
+			 var configId=r.message["configId"]				
+			 window.open("https://test.fdconnect.com/Pay/?sessionToken=" + sessionId + "&configId="+ configId,"_self")
 			  
 		   }
 	   });
  
 	 });
+
+	 frappe.ui.form.on('OnlinePayment', {
+		refresh(frm) { 
+			if(frm.doc.docstatus==1){
+			frm.remove_custom_button('Online Payment');
+			}
+		}
+	})
  }); 
  
  

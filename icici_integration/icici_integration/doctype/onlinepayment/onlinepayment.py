@@ -62,14 +62,18 @@ def getSessionToken(name,amount):
     currencyCode="INR" 
     merchantTxnId=name  
     transactionType="sale"  
+    
      
 
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
-    # resultURL="http://10.0.163.42:8000/paymentreturn?id=" + name    #1VM ipaddress:working*****
-    
-    resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
+    # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
 
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name
+
+    
+
+    
     try:
 
         tokenclass = JClass('TokenClass') 
@@ -77,7 +81,7 @@ def getSessionToken(name,amount):
                             java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
                             java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
                             java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL))
-       
+        
         if str(tokenId) != None:
             newURL= "https://test.fdconnect.com/Pay/?sessionToken=" + str(tokenId) + "&configId="+configId;             
            
@@ -87,7 +91,7 @@ def getSessionToken(name,amount):
     except Exception as err:
         print("Exception: {err}")
 
-    return str(tokenId)
+    return {"TokenId":str(tokenId),"configId":configId}
 
 
 @frappe.whitelist()
@@ -105,14 +109,14 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             
             decData = json.loads(str(decData))
             
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"fptxnid",decData["fpTransactionId"])
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transaction_status",decData["transactionStatus"])          
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transactionstatusdescription",decData["transactionStatusDescription"])           
+            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"fptxnid",decData["fpTransactionId"])
+            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transaction_status",decData["transactionStatus"])          
+            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transactionstatusdescription",decData["transactionStatusDescription"])           
         
-            # frappe.db.commit() 
-            # doc.fptxnid =  decData["fpTransactionId"]
-            # doc.transaction_status = decData["transactionStatus"]
-            # doc.transactionstatusdescription = decData["transactionStatusDescription"]
+            frappe.db.commit() 
+            doc.fptxnid =  decData["fpTransactionId"]
+            doc.transaction_status = decData["transactionStatus"]
+            doc.transactionstatusdescription = decData["transactionStatusDescription"]
                 
         
         
