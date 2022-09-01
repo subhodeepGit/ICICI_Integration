@@ -65,15 +65,12 @@ def getSessionToken(name,amount):
     
      
 
-    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
+    #  resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
     
     # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
 
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
 
-    
-
-    
     try:
 
         tokenclass = JClass('TokenClass') 
@@ -109,14 +106,14 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             
             decData = json.loads(str(decData))
             
-            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"fptxnid",decData["fpTransactionId"])
-            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transaction_status",decData["transactionStatus"])          
-            frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transactionstatusdescription",decData["transactionStatusDescription"])           
+            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"fptxnid",decData["fpTransactionId"])
+            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transaction_status",decData["transactionStatus"])          
+            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transactionstatusdescription",decData["transactionStatusDescription"])           
         
-            frappe.db.commit() 
-            doc.fptxnid =  decData["fpTransactionId"]
-            doc.transaction_status = decData["transactionStatus"]
-            doc.transactionstatusdescription = decData["transactionStatusDescription"]
+            # frappe.db.commit() 
+            # doc.fptxnid =  decData["fpTransactionId"]
+            # doc.transaction_status = decData["transactionStatus"]
+            # doc.transactionstatusdescription = decData["transactionStatusDescription"]
                 
         
         
