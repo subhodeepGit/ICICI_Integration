@@ -22,24 +22,27 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
  
 	 });
 
-	 frappe.ui.form.on('OnlinePayment', {
-		refresh(frm) { 
-			if(frm.doc.docstatus==1){
-			frm.remove_custom_button('Online Payment');
-			}
-		}
-	})
+	 
  }); 
  
- 
- frappe.ui.form.on("OnlinePayment", "onload", function(frm) {
- 	
+ frappe.ui.form.on('OnlinePayment', {
+	refresh(frm) { 
+		
+		if (frm.is_new() && frm.doc.docstatus === 0){
+			frm.remove_custom_button('Online Payment');	
+		}
+		if (!frm.is_new() && frm.doc.docstatus === 1){		
+
+			frm.remove_custom_button('Online Payment');
+		}
+	}
+});
+ frappe.ui.form.on("OnlinePayment", "refresh", function(frm) {	
 	
 	 var  queryString = window.location.search;
 	 var urlParams = new URLSearchParams(queryString);
 	 var fpTxnId = urlParams.get('fpTxnId');
-	 var encData = urlParams.get('encData')
-	
+	 var encData = urlParams.get('encData');
 
 	 frappe.call({		  
 		method: "icici_integration.icici_integration.doctype.onlinepayment.onlinepayment.getDecryptedData",		        
@@ -47,19 +50,38 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 			doc:frm.doc,
 			encData:encData,
 			fdcTxnId:fpTxnId
-			
 
-	  },
-		  
+	    },		  
 		callback: function(r) {
-		   
-		  }
-	  });
+			//alert(r.message)
+		
+			var transactionid=r.message["transactionid"]				
+			var transaction_status=r.message["transaction_status"]				
+			var transaction_status_description=r.message["transaction_status_description"]	
+			var datetime=r.message["datetime"]
+	
+
+			frm.doc.transactionid = transactionid
+			frm.doc.transaction_status=transaction_status
+			frm.doc.transaction_status_description=transaction_status_description
+			frm.doc.datetime=datetime
+
+			frm.refresh_field("transactionid");
+			frm.refresh_field("transaction_status");
+			frm.refresh_field("transaction_status_description");
+			frm.refresh_field("datetime");
+			// frm.save();
+			// frm.save('Submit');				
+			
+			
+		}
+
+	  
+ 	});
 
 	
- 
- 	});  
+ }); 
 		 
 	   
  
-	 
+	

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "PAY.######",
+ "autoname": "ICP.######",
  "creation": "2022-07-27 11:29:32.726380",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -9,12 +9,14 @@
  "field_order": [
   "amount",
   "amended_from",
-  "fptxnid",
+  "transactionid",
   "transaction_status",
-  "transactionstatusdescription"
+  "transaction_status_description",
+  "datetime"
  ],
  "fields": [
   {
+   "allow_on_submit": 1,
    "fieldname": "amount",
    "fieldtype": "Data",
    "label": "Amount"
@@ -30,13 +32,6 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "fptxnid",
-   "fieldtype": "Data",
-   "label": "fpTxnId",
-   "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
    "fieldname": "transaction_status",
    "fieldtype": "Data",
    "label": "Transaction Status",
@@ -44,16 +39,30 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "transactionstatusdescription",
+   "fieldname": "transaction_status_description",
    "fieldtype": "Data",
-   "label": "TransactionStatusDescription",
+   "label": "Transaction Status Description",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "transactionid",
+   "fieldtype": "Data",
+   "label": "TransactionId",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "datetime",
+   "fieldtype": "Datetime",
+   "label": "DateTime",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-30 16:04:02.655691",
+ "modified": "2022-09-05 17:37:15.149899",
  "modified_by": "Administrator",
  "module": "Icici Integration",
  "name": "OnlinePayment",
@@ -73,6 +82,5 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "DESC",
- "track_changes": 1
+ "sort_order": "DESC"
 }

@@ -11,8 +11,8 @@ import frappe
 from frappe.model.document import Document
 from urllib.request import urlopen
 import json
-from cryptography.fernet import Fernet
-from urllib.parse import unquote
+import datetime
+
 
 class OnlinePayment(Document):
     def on_submit(doc): 
@@ -35,18 +35,20 @@ def getTransactionDetails(doc,name):
                                             java.lang.String("%s"% merchantTxnId),
                                             java.lang.String("%s"% fpTransactionId)) 
         
-        transactionDetailsData = json.loads(str(transactionDetailsData))       
-        frappe.db.set_value("OnlinePayment",str(transactionDetailsData["saleTxnDetail"]["merchantTxnId"]),"fptxnid",str(transactionDetailsData["fpTransactionId"]))
-        # frappe.db.sql(""" update `tabOnlinePayment` set fptxnid='%s' where name='%s' """%(str(transactionDetailsData["fpTransactionId"]),str(transactionDetailsData["saleTxnDetail"]["merchantTxnId"])))
-        frappe.db.set_value("OnlinePayment",str(transactionDetailsData["saleTxnDetail"]["merchantTxnId"]),"transaction_status",str(transactionDetailsData["saleTxnDetail"]["transactionStatus"]))           
-        frappe.db.set_value("OnlinePayment",str(transactionDetailsData["saleTxnDetail"]["merchantTxnId"]),"transactionstatusdescription",str(transactionDetailsData["saleTxnDetail"]["transactionStatusDescription"]))           
-      
+        transactionDetailsData = json.loads(str(transactionDetailsData))   
+           
+        frappe.db.set_value("OnlinePayment",transactionDetailsData["saleTxnDetail"]["merchantTxnId"],"transactionid",transactionDetailsData["fpTransactionId"])
+        frappe.db.set_value("OnlinePayment",transactionDetailsData["saleTxnDetail"]["merchantTxnId"],"transaction_status",transactionDetailsData["saleTxnDetail"]["transactionStatus"])        
+        frappe.db.set_value("OnlinePayment",transactionDetailsData["saleTxnDetail"]["merchantTxnId"],"transaction_status_description",transactionDetailsData["saleTxnDetail"]["transactionStatusDescription"])         
         frappe.db.commit() 
-        doc.fptxnid =  str(transactionDetailsData["fpTransactionId"]) 
-        doc.transaction_status =  str(transactionDetailsData["saleTxnDetail"]["transactionStatus"])
-        doc.transactionstatusdescription =  str(transactionDetailsData["saleTxnDetail"]["transactionStatusDescription"])
-    except Exception as e: 
-        print(repr(e))
+
+        doc.transactionid=transactionDetailsData["fpTransactionId"] 
+        doc.transaction_status=transactionDetailsData["saleTxnDetail"]["transactionStatus"]
+        doc.transaction_status_description=transactionDetailsData["saleTxnDetail"]["transactionStatusDescription"]
+               
+    except Exception as err:
+        print(repr(err))
+
     return str(transactionDetailsData) 
         
 @frappe.whitelist()        
@@ -61,18 +63,14 @@ def getSessionToken(name,amount):
     amountValue=amount          
     currencyCode="INR" 
     merchantTxnId=name  
-    transactionType="sale"  
-    
+    transactionType="sale"    
      
 
-    #  resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working
-    
+    resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working    
     # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
-
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
+    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
 
     try:
-
         tokenclass = JClass('TokenClass') 
         tokenId = tokenclass.getToken(java.lang.String("%s"% merchantId), java.lang.String("%s"% key),
                             java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
@@ -86,40 +84,48 @@ def getSessionToken(name,amount):
             frappe.throw("Session has expired. Please create new transaction")  
                     
     except Exception as err:
-        print("Exception: {err}")
+        print(repr(err))
 
     return {"TokenId":str(tokenId),"configId":configId}
 
 
 @frappe.whitelist()
 def getDecryptedData(doc,encData=None,fdcTxnId=None):  
-   
     getDoc=frappe.get_doc("ICICI Settings")
     merchantId = getDoc.merchantid
     apiURL="https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse" 
-    try: 
-        if (encData!=None and fdcTxnId!=None):
+    try:
+        
+        if encData!=None and fdcTxnId!=None:
 
             tokenclass = JClass('TokenClass')
             decData = tokenclass.getDecryptResponse(java.lang.String("%s"% merchantId), java.lang.String("%s"% encData),
-                                                java.lang.String("%s"%fdcTxnId),java.lang.String("%s"% apiURL)) 
-            
+                                                    java.lang.String("%s"%fdcTxnId),java.lang.String("%s"% apiURL))             
             decData = json.loads(str(decData))
             
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"fptxnid",decData["fpTransactionId"])
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transaction_status",decData["transactionStatus"])          
-            # frappe.db.set_value("OnlinePayment",decData["merchantTxnId"],"transactionstatusdescription",decData["transactionStatusDescription"])           
-        
-            # frappe.db.commit() 
-            # doc.fptxnid =  decData["fpTransactionId"]
-            # doc.transaction_status = decData["transactionStatus"]
-            # doc.transactionstatusdescription = decData["transactionStatusDescription"]
-                
-        
+            if decData["merchantTxnId"]!= None:
+                id= frappe.get_doc("OnlinePayment",decData["merchantTxnId"])
+
+            # id.transactionid=decData["fpTransactionId"]
+            # id.transaction_status=decData["transactionStatus"]
+            # id.transaction_status_description=decData["transactionStatusDescription"]
+
+            if (decData["transactionStatus"]=="FAILED"):
+                ct = datetime.datetime.now()
+                # id.datetime=ct
+            else:
+                ct=decData["transactionDateTime"]
+            # id.save()             
+            # id.submit()
+
+
         
     except Exception as e: 
         print(repr(e))
-    return str(decData)    
+    # return str(decData) 
+    if decData!=None:
+        return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
+                "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
 
 
-    
+  

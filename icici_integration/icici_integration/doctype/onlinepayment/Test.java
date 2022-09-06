@@ -12,7 +12,7 @@ public class Test {
                 //  FDConnectSaleRequest request = new FDConnectSaleRequest("470000012765500",
                 // "myak+AZNujouXgWnVdbteXqTfGXio3oB8/yHD7mSVKw=","3lOcRGUBshREdoV8dhWv5g==",
                 // " https://test.fdconnect.com/FirstPayL2Services/getToken",
-                // "10","INR","4rerf","sale",
+                // "10","INR","3565trftgf","sale",
                 // "http://localhost:8080");
 
                 // FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
@@ -22,30 +22,30 @@ public class Test {
 
 
 
-        //Using Constructor
+   
 
-        //     FDConnectInquiryRequest firstPayInquiryRequest =
-        //             new  FDConnectInquiryRequest("470000012765500",
-        //                     "myak+AZNujouXgWnVdbteXqTfGXio3oB8/yHD7mSVKw=",
-        //                     "3lOcRGUBshREdoV8dhWv5g==",
-        //                     "https://test.fdconnect.com/FirstPayL2Services/getTxnInquiryDetail",
-        //                     "OPP000192",
-        //                     "");
-        //     FDConnectInquiryResponse resp = FDConnectUtils.inquiryTxn(firstPayInquiryRequest);
-        //     String inquiryStatus= new Gson().toJson(resp);
-        //     System.out.println(inquiryStatus);
+            FDConnectInquiryRequest firstPayInquiryRequest =
+                    new  FDConnectInquiryRequest("470000012765500",
+                            "myak+AZNujouXgWnVdbteXqTfGXio3oB8/yHD7mSVKw=",
+                            "3lOcRGUBshREdoV8dhWv5g==",
+                            "https://test.fdconnect.com/FirstPayL2Services/getTxnInquiryDetail",
+                            "ICP000011",
+                            "");
+            FDConnectInquiryResponse resp = FDConnectUtils.inquiryTxn(firstPayInquiryRequest);
+            String inquiryStatus= new Gson().toJson(resp);
+            System.out.println(inquiryStatus);
          
 
 
-          FDConnectDecryptRequest fdConnectDecryptRequest = new FDConnectDecryptRequest("470000012765500",
-                        "h2sUPU86ytjDciY1EEAPcahsPhbyUzQOJq3A6p7qVItNoHrXM5FH3uZwoRIGizlduFAmGk+3vuNJPgGu90IfTvEVT992NZnjm7xLGwE+lmgj6otzIh2nefXAGVHPA70wZk8tsTd2cYmOENUy+9ackijJ2AQhf1yWTZLuiKLmAjMq5zXqx0FWKloXtR9N1EhT5vCOeQ4vOAdmA89lTRu0jm57MlwrEdx9jxQWmN5k/1X+KB+5FyL4vx4dIiYeDGL/r0119BEI2EDTEfCPD1dPSBfOGfEr4WfFC+6KxBObzi8gBEUkc8Lp/8NJUiR9imO5",
-                "2022080959113800","https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse");
+        //   FDConnectDecryptRequest fdConnectDecryptRequest = new FDConnectDecryptRequest("470000012765500",
+        //                 "h2sUPU86ytjDciY1EEAPcahsPhbyUzQOJq3A6p7qVItNoHrXM5FH3uZwoRIGizlduFAmGk+3vuNJPgGu90IfTvEVT992NZnjm7xLGwE+lmgj6otzIh2nefXAGVHPA70wZk8tsTd2cYmOENUy+9ackijJ2AQhf1yWTZLuiKLmAjMq5zXqx0FWKloXtR9N1EhT5vCOeQ4vOAdmA89lTRu0jm57MlwrEdx9jxQWmN5k/1X+KB+5FyL4vx4dIiYeDGL/r0119BEI2EDTEfCPD1dPSBfOGfEr4WfFC+6KxBObzi8gBEUkc8Lp/8NJUiR9imO5",
+        //         "2022080959113800","https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse");
 
-        FDConnectDecryptResponse resp = FDConnectUtils.decryptMsg(fdConnectDecryptRequest);
-        //   System.out.println(FDConnectUtils.decryptMsg(fdConnectDecryptRequest));
-        //   System.out.println(new Gson().toJson(resp));
-          String dR=new Gson().toJson(resp);
-          System.out.println("Response-->"+dR);
+        // FDConnectDecryptResponse resp = FDConnectUtils.decryptMsg(fdConnectDecryptRequest);
+        // //   System.out.println(FDConnectUtils.decryptMsg(fdConnectDecryptRequest));
+        // //   System.out.println(new Gson().toJson(resp));
+        //   String dR=new Gson().toJson(resp);
+        //   System.out.println("Response-->"+dR);
 
 
         
