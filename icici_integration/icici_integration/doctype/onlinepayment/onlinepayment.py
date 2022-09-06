@@ -66,9 +66,9 @@ def getSessionToken(name,amount):
     transactionType="sale"    
      
 
-    resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working    
+    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working    
     # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
-    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
 
     try:
         tokenclass = JClass('TokenClass') 
