@@ -16,7 +16,7 @@ import datetime
 
 class OnlinePayment(Document):
     def on_submit(doc): 
-        getSessionToken(doc.name,doc.amount)
+        # getSessionToken(doc.name,doc.amount)
         getTransactionDetails(doc,doc.name)  
        
        
@@ -50,6 +50,8 @@ def getTransactionDetails(doc,name):
         print(repr(err))
 
     return str(transactionDetailsData) 
+  
+
         
 @frappe.whitelist()        
 def getSessionToken(name,amount):  
@@ -66,9 +68,9 @@ def getSessionToken(name,amount):
     transactionType="sale"    
      
 
-    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name    #2VM approach:working    
-    # resultURL="https://demo.soulunileaders.com/paymentreturn?id=" + name
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name 
+    resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local     
+   
+    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name  #server
 
     try:
         tokenclass = JClass('TokenClass') 
@@ -97,7 +99,6 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
     try:
         
         if encData!=None and fdcTxnId!=None:
-
             tokenclass = JClass('TokenClass')
             decData = tokenclass.getDecryptResponse(java.lang.String("%s"% merchantId), java.lang.String("%s"% encData),
                                                     java.lang.String("%s"%fdcTxnId),java.lang.String("%s"% apiURL))             
@@ -105,27 +106,20 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             
             if decData["merchantTxnId"]!= None:
                 id= frappe.get_doc("OnlinePayment",decData["merchantTxnId"])
-
-            # id.transactionid=decData["fpTransactionId"]
-            # id.transaction_status=decData["transactionStatus"]
-            # id.transaction_status_description=decData["transactionStatusDescription"]
-
             if (decData["transactionStatus"]=="FAILED"):
-                ct = datetime.datetime.now()
-                # id.datetime=ct
+                ct = datetime.datetime.now()                
             else:
                 ct=decData["transactionDateTime"]
-            # id.save()             
-            # id.submit()
-
-
-        
     except Exception as e: 
         print(repr(e))
-    # return str(decData) 
     if decData!=None:
         return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
                 "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
 
 
-  
+# @frappe.whitelist()
+# def submission(doc): 
+#     if doc:
+#         submitDoc= frappe.get_doc("OnlinePayment",doc)
+#         submitDoc.submit()
+

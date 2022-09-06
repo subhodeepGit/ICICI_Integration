@@ -31,8 +31,11 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 		if (frm.is_new() && frm.doc.docstatus === 0){
 			frm.remove_custom_button('Online Payment');	
 		}
-		if (!frm.is_new() && frm.doc.docstatus === 1){		
-
+		if (!frm.is_new() && frm.doc.docstatus === 0){	
+			$('.primary-action').prop('disabled', true);
+		}
+		
+		if (!frm.is_new() && frm.doc.docstatus === 1){	            
 			frm.remove_custom_button('Online Payment');
 		}
 	}
@@ -53,13 +56,10 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 
 	    },		  
 		callback: function(r) {
-			//alert(r.message)
-		
 			var transactionid=r.message["transactionid"]				
 			var transaction_status=r.message["transaction_status"]				
 			var transaction_status_description=r.message["transaction_status_description"]	
-			var datetime=r.message["datetime"]
-	
+			var datetime=r.message["datetime"]	
 
 			frm.doc.transactionid = transactionid
 			frm.doc.transaction_status=transaction_status
@@ -70,11 +70,20 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 			frm.refresh_field("transaction_status");
 			frm.refresh_field("transaction_status_description");
 			frm.refresh_field("datetime");
-			// frm.save();
-			// frm.save('Submit');				
+			if (!frm.is_new() && frm.doc.docstatus === 0 && frm.doc.transactionid != undefined  ){
+				$('.primary-action').prop('disabled', false);
+
+
+			// frappe.call({		  
+			// 	method: "icici_integration.icici_integration.doctype.onlinepayment.onlinepayment.submission",		        
+			// 	args: {
+			// 		doc:frm.doc.name,
+			// 	},			
+	
+			// })
 			
-			
-		}
+		    }
+	    }
 
 	  
  	});
