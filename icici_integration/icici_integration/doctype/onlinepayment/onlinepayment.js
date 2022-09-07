@@ -72,8 +72,10 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 			frm.refresh_field("datetime");
 			if (!frm.is_new() && frm.doc.docstatus === 0 && frm.doc.transactionid != undefined  ){
 				$('.primary-action').prop('disabled', false);
-
-
+			}
+			if (!frm.is_new() && frm.doc.docstatus === 0 && frm.doc.transaction_status != undefined){
+				frm.remove_custom_button('Online Payment');	
+			}	
 			// frappe.call({		  
 			// 	method: "icici_integration.icici_integration.doctype.onlinepayment.onlinepayment.submission",		        
 			// 	args: {
@@ -82,7 +84,7 @@ frappe.ui.form.on("OnlinePayment", "refresh", function(frm){
 	
 			// })
 			
-		    }
+		   
 	    }
 
 	  
