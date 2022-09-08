@@ -4,7 +4,8 @@
 from jpype import startJVM, shutdownJVM, java, addClassPath, JClass, JInt
 addClassPath("/opt/bench/frappe-bench/apps/icici_integration/icici_integration/icici_integration/doctype/onlinepayment/TokenClass.jar")
 addClassPath("/opt/bench/frappe-bench/apps/icici_integration/icici_integration/icici_integration/doctype/onlinepayment/CommerceConnect.jar")
-startJVM(convertStrings=False)
+# startJVM(convertStrings=False)
+startJVM(convertStrings=True)  #is used for the proper conversion of java.lang.String to Python string literals
 import webbrowser
 from urllib.request import urlopen
 import frappe
@@ -16,7 +17,7 @@ import datetime
 
 class OnlinePayment(Document):
 	def on_submit(doc): 
-		# getSessionToken(doc.name,doc.amount)
+		
 		getTransactionDetails(doc,doc.name)  
 		frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
 	   
@@ -56,6 +57,8 @@ def getTransactionDetails(doc,name):
 		
 @frappe.whitelist()        
 def getSessionToken(name,amount):  
+	print("\n\n\n\n")
+	print(getDoc)
 
 	getDoc=frappe.get_doc("ICICI Settings")
 	merchantId = getDoc.merchantid
@@ -67,10 +70,10 @@ def getSessionToken(name,amount):
 	currencyCode="INR" 
 	merchantTxnId=name  
 	transactionType="sale"    
-	 
+	
 
 	# resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local     
-   
+	
 	resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name  #server
 
 	try:
@@ -79,7 +82,7 @@ def getSessionToken(name,amount):
 							java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
 							java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
 							java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL))
-		
+		print("\n\n\n\n")
 		if str(tokenId) != None:
 			newURL= "https://test.fdconnect.com/Pay/?sessionToken=" + str(tokenId) + "&configId="+configId;             
 		   
