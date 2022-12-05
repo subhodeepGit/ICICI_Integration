@@ -16,20 +16,25 @@ import datetime
 
 class OnlinePayment(Document):
     def on_submit(doc): 
+        getTransactionDetails(doc,doc.name)  
+        frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
+       
 
-        def __init__(self):
-            self.getTransactionDetails(doc,doc.name)  
-            frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
+        # def __init__(self):
+        #     self.getTransactionDetails(doc,doc.name)  
+        #     frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
        
        
 def getTransactionDetails(doc,name):   
-    getDoc=frappe.get_doc("ICICI Settings")
+    # getDoc=frappe.get_doc("ICICI Settings")
+    getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key
     iv=getDoc.iv
     merchantTxnId=name
     fpTransactionId=""
-    apiURL="https://test.fdconnect.com/FirstPayL2Services/getTxnInquiryDetail" 
+    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getTxnInquiryDetail"   # Test Api
+    apiURL="https://www.fdconnect.com/FDConnectL3Services/getTxnInquiryDetail"     # Production Api
     try: 
         tokenclass = JClass('TokenClass')
         transactionDetailsData = tokenclass.inquiryTest(java.lang.String("%s"% merchantId), java.lang.String("%s"% key),
@@ -57,21 +62,25 @@ def getTransactionDetails(doc,name):
         
 @frappe.whitelist()        
 def getSessionToken(name,paying_amount):  
-    getDoc=frappe.get_doc("ICICI Settings")
+    # getDoc=frappe.get_doc("ICICI Settings")
+    getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key      
     iv=getDoc.iv
     configId= getDoc.configid
-    apiURL="https://test.fdconnect.com/FirstPayL2Services/getToken"     
+    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getToken"   # Test Api
+    apiURL="https://www.fdconnect.com/FDConnectL3Services/getToken"     # Production Api
     amountValue=paying_amount          
     currencyCode="INR" 
     merchantTxnId=name  
     transactionType="sale"    
     
 
-    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local     
+    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local  Test  
+
+    # resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
     
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name  #server
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
 
     try:
         tokenclass = JClass('TokenClass') 
@@ -81,7 +90,7 @@ def getSessionToken(name,paying_amount):
                             java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL))
         
         if str(tokenId) != None:
-            newURL= "https://test.fdconnect.com/Pay/?sessionToken=" + str(tokenId) + "&configId="+configId;             
+            newURL= "https://www.fdconnect.com/Pay/?sessionToken=" + str(tokenId) + "&configId="+configId;             
            
         else :
             frappe.throw("Session has expired. Please create new transaction")  
@@ -94,9 +103,11 @@ def getSessionToken(name,paying_amount):
 
 @frappe.whitelist()
 def getDecryptedData(doc,encData=None,fdcTxnId=None):  
-    getDoc=frappe.get_doc("ICICI Settings")
+    # getDoc=frappe.get_doc("ICICI Settings")
+    getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
-    apiURL="https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse" 
+    # apiURL="https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse"  # Test Api
+    apiURL="https://www.fdconnect.com/FDConnectL3Services/decryptMerchantResponse"     # Production Api
     try:
         
         if encData!=None and fdcTxnId!=None:
@@ -104,8 +115,8 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             decData = tokenclass.getDecryptResponse(java.lang.String("%s"% merchantId), java.lang.String("%s"% encData),
                                                     java.lang.String("%s"%fdcTxnId),java.lang.String("%s"% apiURL))             
             decData = json.loads(str(decData))
-            print("\n\n\n\n\n")
-            print(decData)
+            # print("\n\n\n\n\n")
+            # print("decData----------------",decData)
             
             # if decData["merchantTxnId"]!= None:
             # id= frappe.get_doc("OnlinePayment",decData["merchantTxnId"])
@@ -115,13 +126,13 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
                 ct=decData["transactionDateTime"]
     except Exception as e: 
         print(repr(e))
-    # if decData!=None:
-    #     return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
-    #             "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
+    if decData!=None:
+        return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
+                "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
     if decData==None:
         pass
     # elif decData["errorCode"] != None:
-    # 	pass			
+    #     pass			
     else:
         return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
                         "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
