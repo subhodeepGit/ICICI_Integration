@@ -17,8 +17,8 @@ import datetime
 class OnlinePayment(Document):
     def on_submit(doc): 
         getTransactionDetails(doc,doc.name)  
-        frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
-       
+        frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid) 
+             
 
         # def __init__(self):
         #     self.getTransactionDetails(doc,doc.name)  
@@ -79,7 +79,7 @@ def getSessionToken(name,paying_amount):
     # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local  Test  
 
     # resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
-    
+ 
     resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
 
     try:
@@ -121,22 +121,25 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             # if decData["merchantTxnId"]!= None:
             # id= frappe.get_doc("OnlinePayment",decData["merchantTxnId"])
             if (decData["transactionStatus"]=="FAILED"):
-                ct = datetime.datetime.now()                
+                ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                
+                           
             else:
                 ct=decData["transactionDateTime"]
+                
     except Exception as e: 
         print(repr(e))
     if decData!=None:
-        return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
-                "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
+        if "errorCode" in decData.keys():
+            pass
+        else :
+            return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
+                "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct} 
+
     if decData==None:
         pass
-    # elif decData["errorCode"] != None:
-    #     pass			
-    else:
-        return {"transactionid":decData["fpTransactionId"],"transaction_status":decData["transactionStatus"],
-                        "transaction_status_description":decData["transactionStatusDescription"],"datetime":ct}
-
+   			
+   
 # @frappe.whitelist()
 # def submission(doc): 
 # 	print("\n\n\n\n\n")
