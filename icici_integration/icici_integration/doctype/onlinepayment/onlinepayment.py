@@ -101,6 +101,10 @@ def getSessionToken(name,paying_amount):
     return {"TokenId":str(tokenId),"configId":configId}
 
 
+
+
+
+
 @frappe.whitelist()
 def getDecryptedData(doc,encData=None,fdcTxnId=None):  
     # getDoc=frappe.get_doc("ICICI Settings")
@@ -122,8 +126,7 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
             # id= frappe.get_doc("OnlinePayment",decData["merchantTxnId"])
             if (decData["transactionStatus"]=="FAILED"):
                 ct = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
-                           
+                                        
             else:
                 ct=decData["transactionDateTime"]
                 
@@ -138,8 +141,55 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
 
     if decData==None:
         pass
-   			
-   
+               
+
+@frappe.whitelist()        
+def getTokenNew(name,paying_amount,partyNo,partyName,rollNo,SamsPortalId):  
+    # getDoc=frappe.get_doc("ICICI Settings")
+    getDoc=frappe.get_doc("ICICI settings Production")
+    merchantId = getDoc.merchantid
+    key=getDoc.key      
+    iv=getDoc.iv
+    configId= getDoc.configid
+    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getToken"   # Test Api
+    apiURL="https://www.fdconnect.com/FDConnectL3Services/getToken"     # Production Api
+    amountValue=paying_amount          
+    currencyCode="INR" 
+    merchantTxnId=name  
+    transactionType="sale"  
+    party_No=partyNo
+    party_Name=partyName
+    roll_No=rollNo
+    SAMSPortalId=SamsPortalId
+    
+
+    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local  Test 
+  
+
+    # resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
+
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
+
+    try:
+        tokenclass = JClass('TokenClass') 
+        tokenId = tokenclass.getTokenNew(java.lang.String("%s"% merchantId), java.lang.String("%s"% key),
+                            java.lang.String("%s"%iv),java.lang.String("%s"% apiURL),
+                            java.lang.String("%s"% amountValue),java.lang.String("%s"% currencyCode),java.lang.String("%s"% merchantTxnId),
+                            java.lang.String("%s"% transactionType),java.lang.String("%s"% resultURL),java.lang.String("%s"% party_No),
+                            java.lang.String("%s"% party_Name),java.lang.String("%s"% roll_No),java.lang.String("%s"% SAMSPortalId))
+        # print('\n\n\n\n\n\n\n') 
+        # print(tokenId)                   
+        
+        if str(tokenId) != None:
+            newURL= "https://www.fdconnect.com/Pay/?sessionToken=" + str(tokenId) + "&configId="+configId
+           
+        else :
+            frappe.throw("Session has expired. Please create new transaction")  
+    except Exception as err:
+        print(repr(err))
+
+    return {"TokenId":str(tokenId),"configId":configId}
+
 # @frappe.whitelist()
 # def submission(doc): 
 # 	print("\n\n\n\n\n")

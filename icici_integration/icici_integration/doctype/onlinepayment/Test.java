@@ -9,25 +9,46 @@ import com.google.gson.Gson;
 
 public class Test {
         public static void main(String[] args) {
+                       
+ 
+        FDConnectSaleRequest request = new FDConnectSaleRequest();
+        request.setMerchantId("470000012765500");
+        request.setKey("myak+AZNujouXgWnVdbteXqTfGXio3oB8/yHD7mSVKw=");
+        request.setIv("3lOcRGUBshREdoV8dhWv5g==");
+        request.setApiURL("https://test.fdconnect.com/FirstPayL2Services/getToken");
+        request.setAmount("1");
+        request.setCurrencyCode("INR");
+        request.setMerchantTxnId("TRA12ff3456");
+        request.setTransactionType("sale");        
+        request.setResultURL("http://localhost:8080");
+        request.setUdf1("EDU-STU-2022-00002");
+        request.setUdf2("ADVIKA PATI");
+        request.setUdf3("2110102");
+        request.setUdf4("SamsPortalId");  
 
 
-                FDConnectSaleRequest request = new FDConnectSaleRequest("470000087081990",
-                "5gzhd8sBVDdJyLpn3hEXNyrQNm6qh7fUlPTIz9EhKbk=","VdA4m1prGGFGFLjSDyKEMw==",
-                "https://www.fdconnect.com/FDConnectL3Services/getToken",
-                "10","INR","refrdtefdfd5435","sale",
-                "http://localhost:8080");
+        FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
+        System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
+        System.out.println("respErrorCode :"+resp.getErrorCode());
+        System.out.println("ErrorMessage :"+resp.getErrorMessage());               
+        
 
-                FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
-                System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
-                System.out.println("respErrorCode :"+resp.getErrorCode());
-                System.out.println("ErrorMessage :"+resp.getErrorMessage()); 
+                // FDConnectSaleRequest request = new FDConnectSaleRequest("470000087081990",
+                // "5gzhd8sBVDdJyLpn3hEXNyrQNm6qh7fUlPTIz9EhKbk=","VdA4m1prGGFGFLjSDyKEMw==",
+                // "https://www.fdconnect.com/FDConnectL3Services/getToken",
+                // "10","INR","refrdtefdfd5435","sale",
+                // "http://localhost:8080");
+                // FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
+                // System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
+                // System.out.println("respErrorCode :"+resp.getErrorCode());
+                // System.out.println("ErrorMessage :"+resp.getErrorMessage()); 
+                
 
                 //  FDConnectSaleRequest request = new FDConnectSaleRequest("470000012765500",
                 // "myak+AZNujouXgWnVdbteXqTfGXio3oB8/yHD7mSVKw=","3lOcRGUBshREdoV8dhWv5g==",
                 // " https://test.fdconnect.com/FirstPayL2Services/getToken",
                 // "10","INR","54354retfdsvdcvcx","sale",
                 // "http://localhost:8080");
-
                 // FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);
                 // System.out.println("resp SessionTokenId :" + resp.getSessionTokenId());
                 // System.out.println("respErrorCode :"+resp.getErrorCode());

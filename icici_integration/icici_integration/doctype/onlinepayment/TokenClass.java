@@ -37,9 +37,11 @@ public class TokenClass {
         return inquiryStatus;
     }
 
-     public static String getTokenNew(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, String merchantTxnId, String transactionType, String resultURL,String Udf) throws IOException {
+     public static String getTokenNew(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, 
+                                      String merchantTxnId, String transactionType, String resultURL,String party_No,String party_Name,
+                                      String roll_No,String SamsPortalId) throws IOException {
         
-        
+ 
         FDConnectSaleRequest request = new FDConnectSaleRequest();
         request.setMerchantId(merchantId);
         request.setKey(key);
@@ -48,9 +50,12 @@ public class TokenClass {
         request.setAmount(amount);
         request.setCurrencyCode(currencyCode);
         request.setMerchantTxnId(merchantTxnId);
-        request.setTransactionType(transactionType);
-        request.setUdf5(Udf);
+        request.setTransactionType(transactionType);        
         request.setResultURL(resultURL);
+        request.setUdf1(party_No);
+        request.setUdf2(party_Name);
+        request.setUdf3(roll_No);
+        request.setUdf4(SamsPortalId);
 
         FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);                     
         String tokenId=resp.getSessionTokenId();
