@@ -12,7 +12,8 @@ import java.net.URI;
 
 public class TokenClass {
 
-    public static String getToken(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, String merchantTxnId, String transactionType, String resultURL) throws IOException {
+    public static String getToken(String merchantId, String key, String iv, String apiURL, String amount, String currencyCode, 
+                                  String merchantTxnId, String transactionType, String resultURL) throws IOException {
         
         FDConnectSaleRequest request = new FDConnectSaleRequest(merchantId,key,iv,apiURL,amount,currencyCode,merchantTxnId,transactionType,resultURL);
         FDConnectSaleResponse resp = FDConnectUtils.saleTxn(request);

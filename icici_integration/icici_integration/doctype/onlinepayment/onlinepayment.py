@@ -25,15 +25,13 @@ class OnlinePayment(Document):
         #     frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)
        
        
-def getTransactionDetails(doc,name):   
-    # getDoc=frappe.get_doc("ICICI Settings")
+def getTransactionDetails(doc,name):  
     getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key
     iv=getDoc.iv
     merchantTxnId=name
     fpTransactionId=""
-    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getTxnInquiryDetail"   # Test Api
     apiURL="https://www.fdconnect.com/FDConnectL3Services/getTxnInquiryDetail"     # Production Api
     try: 
         tokenclass = JClass('TokenClass')
@@ -61,14 +59,12 @@ def getTransactionDetails(doc,name):
 
         
 @frappe.whitelist()        
-def getSessionToken(name,paying_amount):  
-    # getDoc=frappe.get_doc("ICICI Settings")
+def getSessionToken(name,paying_amount): 
     getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key      
     iv=getDoc.iv
     configId= getDoc.configid
-    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getToken"   # Test Api
     apiURL="https://www.fdconnect.com/FDConnectL3Services/getToken"     # Production Api
     amountValue=paying_amount          
     currencyCode="INR" 
@@ -76,10 +72,6 @@ def getSessionToken(name,paying_amount):
     transactionType="sale"    
     
 
-    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local  Test  
-
-    # resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
- 
     resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
 
     try:
@@ -106,11 +98,9 @@ def getSessionToken(name,paying_amount):
 
 
 @frappe.whitelist()
-def getDecryptedData(doc,encData=None,fdcTxnId=None):  
-    # getDoc=frappe.get_doc("ICICI Settings")
+def getDecryptedData(doc,encData=None,fdcTxnId=None):
     getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
-    # apiURL="https://test.fdconnect.com/FirstPayL2Services/decryptMerchantResponse"  # Test Api
     apiURL="https://www.fdconnect.com/FDConnectL3Services/decryptMerchantResponse"     # Production Api
     try:
         
@@ -144,31 +134,33 @@ def getDecryptedData(doc,encData=None,fdcTxnId=None):
                
 
 @frappe.whitelist()        
-def getTokenNew(name,paying_amount,partyNo,partyName,rollNo,SamsPortalId):  
-    # getDoc=frappe.get_doc("ICICI Settings")
+def getTokenNew(name,paying_amount,partyNo,partyName,rollNo=None,SamsPortalId=None): 
     getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key      
     iv=getDoc.iv
     configId= getDoc.configid
-    # apiURL="https://test.fdconnect.com/FirstPayL2Services/getToken"   # Test Api
     apiURL="https://www.fdconnect.com/FDConnectL3Services/getToken"     # Production Api
     amountValue=paying_amount          
     currencyCode="INR" 
     merchantTxnId=name  
     transactionType="sale"  
     party_No=partyNo
-    party_Name=partyName
-    roll_No=rollNo
-    SAMSPortalId=SamsPortalId
-    
+    party_Name=partyName     
+    if rollNo !=None:
+       roll_No=rollNo
+    else :
+        roll_No="rollNo"
 
-    # resultURL="http://10.0.160.184:8000/paymentreturn?id=" + name   #local  Test 
-  
+        
+    if SamsPortalId  !=None :
+        SAMSPortalId=SamsPortalId
+    else:
+        SAMSPortalId="SamsPortalId"
 
-    # resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
+    resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
 
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
+    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
 
     try:
         tokenclass = JClass('TokenClass') 

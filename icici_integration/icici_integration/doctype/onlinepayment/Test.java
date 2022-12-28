@@ -18,7 +18,7 @@ public class Test {
         request.setApiURL("https://test.fdconnect.com/FirstPayL2Services/getToken");
         request.setAmount("1");
         request.setCurrencyCode("INR");
-        request.setMerchantTxnId("TRA12ff3456");
+        request.setMerchantTxnId("TRA12ff3f456");
         request.setTransactionType("sale");        
         request.setResultURL("http://localhost:8080");
         request.setUdf1("EDU-STU-2022-00002");
