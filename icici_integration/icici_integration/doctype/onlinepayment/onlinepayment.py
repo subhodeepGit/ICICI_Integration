@@ -158,9 +158,8 @@ def getTokenNew(name,paying_amount,partyNo,partyName,rollNo=None,SamsPortalId=No
     else:
         SAMSPortalId="SamsPortalId"
 
-    resultURL="http://10.0.160.184:8000/PaymentReturnLivePageProd?id=" + name   # local production
 
-    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
 
     try:
         tokenclass = JClass('TokenClass') 
