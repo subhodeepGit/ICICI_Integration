@@ -3,7 +3,7 @@
 
 from jpype import startJVM, shutdownJVM, java, addClassPath, JClass, JInt
 addClassPath("/opt/bench/frappe-bench/apps/icici_integration/icici_integration/icici_integration/doctype/onlinepayment/TokenClass.jar")
-addClassPath("/opt/bench/frappe-bench/apps/icici_integration/icici_integration/icici_integration/doctype/onlinepayment/CommerceConnect.jar")
+addClassPath("/opt/bench/frappe-bench/apps/icici_integration/icici_integration/icici_integration/doctype/onlinepayment/CommerceConnect.jar")            
 startJVM(convertStrings=True)  #is used for the proper conversion of java.lang.String to Python string literals
 import webbrowser
 from urllib.request import urlopen
@@ -14,11 +14,12 @@ import json
 import datetime
 
 
+
 class OnlinePayment(Document):
+    
     def on_submit(doc): 
         getTransactionDetails(doc,doc.name)  
-        frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid) 
-             
+        frappe.msgprint("Your Transaction is completed. Your Transaction Id is " + doc.transactionid)            
 
         # def __init__(self):
         #     self.getTransactionDetails(doc,doc.name)  
@@ -60,6 +61,7 @@ def getTransactionDetails(doc,name):
         
 @frappe.whitelist()        
 def getSessionToken(name,paying_amount): 
+    
     getDoc=frappe.get_doc("ICICI settings Production")
     merchantId = getDoc.merchantid
     key=getDoc.key      
@@ -160,7 +162,9 @@ def getTokenNew(name,paying_amount,partyNo,partyName,rollNo=None,SamsPortalId=No
         SAMSPortalId="SamsPortalId"
 
 
-    resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #server  production
+    # resultURL="https://paymentkp.eduleadonline.com/paymentreturn?id=" + name       #UAT  server
+
+    resultURL="https://paymentkp.eduleadonline.com/paymentreturnproduction?id=" + name       #production server
 
     try:
         tokenclass = JClass('TokenClass') 
@@ -181,6 +185,10 @@ def getTokenNew(name,paying_amount,partyNo,partyName,rollNo=None,SamsPortalId=No
         print(repr(err))
 
     return {"TokenId":str(tokenId),"configId":configId}
+
+
+
+
 
 # @frappe.whitelist()
 # def submission(doc): 
